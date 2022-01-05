@@ -13,24 +13,34 @@ HEADER = [
   "num_orders"
   ]
 
+readFile = 'train.csv'
+
 def write_to_file(row):
     """
     Writes one row to a file, depending on its center_id.
     The row parameter should be a dictionary, with keys that match HEADER.
     """
 
-    filename = str(row["center_id"]) + '.csv'
+    filename = 'files/' + str(row["center_id"]) + '.csv'
 
     # CREATING FILES AND WRITING HEADERS IF THEY DON'T ALREADY EXIST
 
     # Writing header to individual csv file
     if not os.path.exists(filename):
-        with open(filename) as file:
-            csv.DictWriter(file, fieldnames=HEADER, quoting=csv.QUOTE_NONNUMERIC).writeheader()
+        with open(filename, 'x') as file:
+            csv.DictWriter(file, fieldnames=HEADER, quoting=csv.QUOTE_NONE).writeheader()
             file.close()
 
     # WRITING THE DATA
 
-    with open(filename) as file:
-        csv.DictWriter(file, fieldnames=HEADER, quoting=csv.QUOTE_NONNUMERIC).writerow(row)
+    with open(filename, 'a') as file:
+        csv.DictWriter(file, fieldnames=HEADER, quoting=csv.QUOTE_NONE).writerow(row)
         file.close()
+
+
+with open(readFile, 'r') as file:
+  i = 0
+  for row in csv.DictReader(file):
+    print(i)
+    write_to_file(row)
+    i += 1
